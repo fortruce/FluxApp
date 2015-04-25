@@ -12,15 +12,17 @@ var paths = {
   src: 'src/js/**/*.*',
   buildJs: 'build/js/',
   buildCss: 'build/css/',
-  buildHtml: 'build/',
+  build: 'build/',
   html: 'src/index.html',
   scss: 'src/scss/**/*.scss',
   scssMain: 'src/scss/main.scss'
 };
 
-gulp.task('watch', ['browserify'], function () {
-  gulp.watch(paths.src, ['browserify']);
-  gulp.watch(paths.html, ['html']);
+gulp.task('watch', ['browserify', 'html', 'scss'], function () {
+  gulp.watch(paths.src, ['browserify'])
+      .on('change', reload);
+  gulp.watch(paths.html, ['html'])
+      .on('change', reload);
   gulp.watch(paths.scss, ['scss']);
 });
 
@@ -29,8 +31,7 @@ gulp.task('watch', ['browserify'], function () {
  */
 gulp.task('html', function () {
   gulp.src(paths.html)
-      .pipe(gulp.dest(paths.buildHtml))
-      .pipe(reload);
+      .pipe(gulp.dest(paths.build));
 });
 
 /**
@@ -39,7 +40,7 @@ gulp.task('html', function () {
 gulp.task('scss', function () {
   gulp.src(paths.scssMain)
       .pipe(sass())
-      .pipe(gulp.dest(paths.css))
+      .pipe(gulp.dest(paths.buildCss))
       .pipe(reload({stream: true}));
 })
 
