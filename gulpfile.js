@@ -50,7 +50,8 @@ function bundle(b) {
           })
           .pipe(source(paths.app))
           .pipe(rename(paths.buildApp))
-          .pipe(gulp.dest(paths.buildJs));
+          .pipe(gulp.dest(paths.buildJs))
+          .on('end', reload);
 }
 
 gulp.task('watch', ['browserify', 'html', 'scss'], function () {
@@ -58,9 +59,6 @@ gulp.task('watch', ['browserify', 'html', 'scss'], function () {
   gulp.watch(paths.html, ['html'])
       .on('change', reload);
   gulp.watch(paths.scss, ['scss']);
-
-  gulp.watch(paths.buildJs + paths.buildApp)
-      .on('change', reload);
 });
 
 /**
