@@ -1,6 +1,6 @@
 var React = require('react');
 var RouteHandler = require('react-router').RouteHandler;
-var ChatActions = require('../actions/ChatActions');
+var MessageActions = require('../actions/MessageActions');
 var RoomStore = require('../stores/RoomStore');
 var RoomList = require('../components/RoomList');
 var ConnectStore = require('../stores/ConnectStore');
@@ -37,7 +37,9 @@ module.exports = React.createClass({
     e.preventDefault();
     var input = React.findDOMNode(this.refs.input);
     if (input.value.trim()) {
-      ChatActions.createMessage(input.value.trim(), this.context.router.getCurrentParams().roomName);
+      MessageActions.createMessage(
+        input.value.trim(),
+        this.context.router.getCurrentParams().roomName);
     }
   }
 });

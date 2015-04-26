@@ -2,7 +2,7 @@ var Dispatcher = require('../dispatcher');
 var assign = require('object-assign');
 var ActionTypes = require('../constants/constants').ActionTypes;
 var EventEmitter = require('events').EventEmitter;
-var ChatMessageUtils = require('../utils/ChatMessageUtils');
+var MessageUtils = require('../utils/MessageUtils');
 
 var CHANGE_EVENT = 'change';
 
@@ -49,7 +49,7 @@ var MessageStore = assign({}, EventEmitter.prototype, {
 MessageStore.dispatchToken = Dispatcher.register((action) => {
   switch(action.type) {
     case ActionTypes.CREATE_MESSAGE:
-      var message = ChatMessageUtils.getCreatedMessageData(
+      var message = MessageUtils.getCreatedMessageData(
         action.text,
         action.room
       );
