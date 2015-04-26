@@ -1,10 +1,13 @@
 var gulp = require('gulp');
 var fs = require('fs');
-var browserify = require('gulp-browserify');
+var browserify = require('browserify');
 var babelify = require('babelify');
 var rename = require('gulp-rename');
 var sass = require('gulp-sass');
 var browserSync = require('browser-sync').create();
+var source = require('vinyl-source-stream');
+var watchify = require('watchify');
+var sourceMaps = require('gulp-sourcemaps');
 var reload = browserSync.reload;
 
 var paths = {
@@ -18,6 +21,37 @@ var paths = {
   scss: 'src/scss/**/*.scss',
   scssMain: 'src/scss/main.scss'
 };
+
+
+
+gulp.task('browserify', function() {
+  var watcher = watchify(browserify({
+    entries: [paths.app],
+    transform: [babelify],
+    debug: true,
+    cache: {}, packageCache: {}, fullPaths: true
+  }));
+
+  bundle(watcher);
+
+  return watcher.on('update', function() {
+    console.log('browserify: updated');
+    bundle(watcher);
+  });
+});
+
+function bundle(b) {
+  return b.bundle()
+          // catch transform errors and end current pipe w/o crashing
+          .on('error', function(err) {
+            console.log(err.message);
+            console.log('error');
+            this.emit('end');
+          })
+          .pipe(source(paths.app))
+          .pipe(rename('app.js'))
+          .pipe(gulp.dest(paths.buildJs));
+}
 
 gulp.task('watch', ['browserify', 'html', 'scss'], function () {
   gulp.watch(paths.src, ['browserify']);
@@ -45,16 +79,6 @@ gulp.task('scss', function () {
       .pipe(sass())
       .pipe(gulp.dest(paths.buildCss))
       .pipe(reload({stream: true}));
-});
-
-gulp.task('browserify', function() {
-  gulp.src(paths.app)
-      .pipe(browserify({
-        debug: true,
-        transform: ['babelify']
-      }))
-      .pipe(rename(paths.buildApp))
-      .pipe(gulp.dest(paths.buildJs));
 });
 
 gulp.task('browserSync', ['watch'], function() {
