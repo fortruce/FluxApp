@@ -9,6 +9,6 @@ module.exports = {
       server: payload.server,
       port: payload.port
     });
-    payload.router.transitionTo('/' + payload.server);
+    payload.router.transitionTo('/Server');
   }
 };

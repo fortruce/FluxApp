@@ -49,7 +49,7 @@ RoomStore.dispatchToken = Dispatcher.register((action) => {
     case ActionTypes.INIT_CONNECTION:
       console.log('initcon');
       Dispatcher.waitFor([ConnectStore.dispatchToken]);
-      joinRoom(ConnectStore.getServer());
+      joinRoom('Server');
       RoomStore.emitChange();
       break;
 
