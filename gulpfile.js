@@ -13,17 +13,20 @@ var paths = {
   buildJs: 'build/js/',
   buildCss: 'build/css/',
   build: 'build/',
+  buildApp: 'app.js',
   html: 'src/index.html',
   scss: 'src/scss/**/*.scss',
   scssMain: 'src/scss/main.scss'
 };
 
 gulp.task('watch', ['browserify', 'html', 'scss'], function () {
-  gulp.watch(paths.src, ['browserify'])
-      .on('change', reload);
+  gulp.watch(paths.src, ['browserify']);
   gulp.watch(paths.html, ['html'])
       .on('change', reload);
   gulp.watch(paths.scss, ['scss']);
+
+  gulp.watch(paths.buildJs + paths.buildApp)
+      .on('change', reload);
 });
 
 /**
@@ -42,7 +45,7 @@ gulp.task('scss', function () {
       .pipe(sass())
       .pipe(gulp.dest(paths.buildCss))
       .pipe(reload({stream: true}));
-})
+});
 
 gulp.task('browserify', function() {
   gulp.src(paths.app)
@@ -50,7 +53,7 @@ gulp.task('browserify', function() {
         debug: true,
         transform: ['babelify']
       }))
-      .pipe(rename('app.js'))
+      .pipe(rename(paths.buildApp))
       .pipe(gulp.dest(paths.buildJs));
 });
 
