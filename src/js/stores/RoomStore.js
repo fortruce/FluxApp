@@ -41,11 +41,6 @@ RoomStore.dispatchToken = Dispatcher.register((action) => {
       RoomStore.emitChange();
       break;
 
-    case ActionTypes.CLICK_ROOM:
-      switchRoom(action.room);
-      RoomStore.emitChange();
-      break;
-
     case ActionTypes.INIT_CONNECTION:
       console.log('initcon');
       Dispatcher.waitFor([ConnectStore.dispatchToken]);
