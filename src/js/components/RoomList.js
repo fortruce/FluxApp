@@ -11,6 +11,10 @@ function getStateFromStores() {
 }
 
 module.exports = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.func
+  },
+
   getInitialState() {
     return getStateFromStores();
   },
@@ -45,7 +49,7 @@ module.exports = React.createClass({
     e.preventDefault();
     var room = React.findDOMNode(this.refs.input).value.trim();
     if (room) {
-      RoomActions.joinRoom(room);
+      RoomActions.joinRoom(room, this.context.router);
     }
   },
 
