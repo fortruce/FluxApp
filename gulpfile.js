@@ -49,7 +49,7 @@ function bundle(b) {
             this.emit('end');
           })
           .pipe(source(paths.app))
-          .pipe(rename('app.js'))
+          .pipe(rename(paths.buildApp))
           .pipe(gulp.dest(paths.buildJs));
 }
 
