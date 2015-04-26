@@ -37,10 +37,15 @@ module.exports = React.createClass({
     this.setState(getStateFromStores(props.room));
   },
 
+  componentDidUpdate() {
+    var scrollable = React.findDOMNode(this.refs.scrollable);
+    scrollable.scrollTop = scrollable.scrollHeight;
+  },
+
   render() {
     var messages = this.state.messages.map(getMessage);
     return (
-      <div>
+      <div className="messageBox" ref="scrollable">
         <h2>{this.props.room}</h2>
         {messages}
       </div>
